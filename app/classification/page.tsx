@@ -4,9 +4,9 @@ import { useRouter } from "next/navigation";
 import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { ChevronLeft } from "lucide-react";
-import InputText from "@/components/InputText";
-import ClassificationResult from "@/components/ClassificationResult";
-import Starfield from "@/components/Starfield";
+import InputText from "@/components/classification/InputText";
+import ClassificationResult from "@/components/classification/ClassificationResult";
+import Starfield from "@/components/classification/Starfield";
 
 export default function ClassificationPage() {
   const router = useRouter();

@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
-import Hero from "@/components/Hero";
-import UploadBar from "@/components/UploadBar";
-import Threads from "@/components/Threads";
+import Hero from "@/components/home/Hero";
+import UploadBar from "@/components/home/UploadBar";
+import Threads from "@/components/home/Threads";
 
 const HomePage: NextPage = () => {
   return (
