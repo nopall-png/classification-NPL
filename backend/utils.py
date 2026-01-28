@@ -102,3 +102,44 @@ def dummy_classify(text):
         confidence = 0.5 + (confidence * 0.4)
         
     return best_category, round(confidence, 2)
+
+# Load spaCy model once
+try:
+    import spacy
+    try:
+        nlp = spacy.load("en_core_web_sm")
+    except OSError:
+        # Fallback if not found, though we should have downloaded it
+        from spacy.cli import download
+        download("en_core_web_sm")
+        nlp = spacy.load("en_core_web_sm")
+except ImportError:
+    nlp = None
+    print("WARNING: spaCy not found. NER will be disabled.")
+
+def extract_entities(text):
+    """
+    Extracts named entities from text using spaCy.
+    Returns a list of dicts: [{'text': '...', 'label': '...'}, ...]
+    """
+    if not nlp:
+        return []
+    
+    doc = nlp(text)
+    entities = []
+    
+    # Filter for interesting entities and deduplicate
+    seen = set()
+    
+    for ent in doc.ents:
+        # We can filter generic types if we want, but let's keep most
+        # Common: PERSON, ORG, GPE, LOC, DATE, MONEY
+        key = (ent.text, ent.label_)
+        if key not in seen:
+            entities.append({
+                "text": ent.text,
+                "label": ent.label_
+            })
+            seen.add(key)
+            
+    return entities

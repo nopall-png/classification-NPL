@@ -4,7 +4,7 @@ import os
 import sys
 import uuid
 from models.ml_model import predict_ml
-from utils import extract_text_from_pdf, transcribe_audio
+from utils import extract_text_from_pdf, transcribe_audio, extract_entities
 
 app = Flask(__name__)
 CORS(app)
@@ -65,6 +65,9 @@ def predict():
         # 3. Classify using SVM Model
         category, confidence = predict_ml(text_to_classify)
         
+        # 4. Extract Entities
+        entities = extract_entities(text_to_classify)
+        
         # Cleanup temp file
         if cleanup_file and os.path.exists(cleanup_file):
             try:
@@ -80,7 +83,8 @@ def predict():
         return jsonify({
             "category": category,
             "confidence": confidence,
-            "text": text_to_classify
+            "text": text_to_classify,
+            "entities": entities
         })
 
     except Exception as e:

@@ -2,14 +2,18 @@
 
 import { FileText } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useEffect, useRef } from "react";
 
 interface InputTextProps {
   value: string;
   onChange: (value: string) => void;
   fileName?: string;
+  highlightText?: string;
 }
 
-export default function InputText({ value, onChange, fileName }: InputTextProps) {
+export default function InputText({ value, onChange, fileName, highlightText }: InputTextProps) {
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
   // Determine file type based on extension
   const getFileType = (name: string) => {
     if (!name) return "TEXT INPUT";
@@ -22,6 +26,27 @@ export default function InputText({ value, onChange, fileName }: InputTextProps)
   };
 
   const fileType = getFileType(fileName || "");
+
+  // Handle highlighting
+  useEffect(() => {
+    if (highlightText && textareaRef.current && value) {
+      const index = value.toLowerCase().indexOf(highlightText.toLowerCase());
+      if (index !== -1) {
+        const textarea = textareaRef.current;
+        textarea.focus();
+        textarea.setSelectionRange(index, index + highlightText.length);
+
+        // Try to scroll to selection
+        const lines = value.substr(0, index).split("\n").length;
+        const lineHeight = 24; // Approximation based on CSS
+        const scrollPos = (lines - 1) * lineHeight;
+
+        // This is a simple approximation, better way might be via blur/focus trick or scrollIntoView if supported
+        textarea.blur();
+        textarea.focus();
+      }
+    }
+  }, [highlightText, value]);
 
   return (
     <div className="w-full flex justify-start">
@@ -65,6 +90,7 @@ export default function InputText({ value, onChange, fileName }: InputTextProps)
 
           {/* TEXTAREA */}
           <textarea
+            ref={textareaRef}
             value={value}
             onChange={(e) => onChange(e.target.value)}
             placeholder="Extracted text will appear here..."
@@ -77,6 +103,7 @@ export default function InputText({ value, onChange, fileName }: InputTextProps)
               focus:outline-none focus:border-white/20 focus:bg-white/10
               transition-all duration-300
               overflow-y-auto custom-scrollbar
+              selection:bg-white/30 selection:text-white
             "
           />
         </div>

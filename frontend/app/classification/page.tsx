@@ -13,6 +13,8 @@ export default function ClassificationPage() {
   const [text, setText] = useState("");
   const [category, setCategory] = useState("");
   const [confidence, setConfidence] = useState(0);
+  const [entities, setEntities] = useState([]);
+  const [highlightText, setHighlightText] = useState("");
   const [fileName, setFileName] = useState("");
 
   const onBackClick = useCallback(() => {
@@ -28,6 +30,7 @@ export default function ClassificationPage() {
         setText(result.text || "");
         setCategory(result.category || "Unknown");
         setConfidence(result.confidence || 0);
+        setEntities(result.entities || []);
         setFileName(result.fileName || "Unknown File");
       } catch (e) {
         console.error("Failed to parse result", e);
@@ -82,7 +85,7 @@ export default function ClassificationPage() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
           >
-            <InputText value={text} onChange={setText} fileName={fileName} />
+            <InputText value={text} onChange={setText} fileName={fileName} highlightText={highlightText} />
           </motion.div>
 
           <motion.div
@@ -90,7 +93,12 @@ export default function ClassificationPage() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
           >
-            <ClassificationResult category={category} confidence={confidence} />
+            <ClassificationResult
+              category={category}
+              confidence={confidence}
+              entities={entities}
+              onEntityClick={(val) => setHighlightText(val)}
+            />
           </motion.div>
         </div>
       </div>
