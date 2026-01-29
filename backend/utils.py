@@ -1,0 +1,109 @@
+import os
+import shutil
+import PyPDF2
+import speech_recognition as sr
+from pydub import AudioSegment
+
+# Explicitly configure FFmpeg path for pydub
+# Using local binaries in the same folder as this script
+base_dir = os.path.dirname(os.path.abspath(__file__))
+ffmpeg_path = os.path.join(base_dir, "bin", "ffmpeg.exe")
+ffprobe_path = os.path.join(base_dir, "bin", "ffprobe.exe")
+
+if os.path.exists(ffmpeg_path):
+    print(f"FFmpeg configured at: {ffmpeg_path}")
+    AudioSegment.converter = ffmpeg_path
+    AudioSegment.ffprobe = ffprobe_path
+else:
+    print(f"WARNING: FFmpeg not found at {ffmpeg_path}. Audio processing might fail.")
+    # Fallback to PATH
+    if shutil.which("ffmpeg"):
+         AudioSegment.converter = shutil.which("ffmpeg")
+
+def extract_text_from_pdf(file_path):
+    """
+    Extracts text from a PDF file.
+    """
+    text = ""
+    try:
+        with open(file_path, 'rb') as file:
+            reader = PyPDF2.PdfReader(file)
+            for page in reader.pages:
+                text += page.extract_text() + "\n"
+    except Exception as e:
+        print(f"Error extracting PDF: {e}")
+        return None
+    return text
+
+def transcribe_audio(file_path):
+    """
+    Transcribes audio file to text using Google Web Speech API.
+    Supports converting mp3/wav to compatible format if needed.
+    """
+    recognizer = sr.Recognizer()
+    
+    # Convert to WAV if necessary (SpeechRecognition supports WAV/AIFF/FLAC)
+    if not file_path.endswith('.wav'):
+        try:
+            # Load file (detects format automatically: mp3, webm, etc.)
+            sound = AudioSegment.from_file(file_path)
+            wav_path = file_path + ".wav"
+            sound.export(wav_path, format="wav")
+            file_path = wav_path
+        except Exception as e:
+             return f"Error converting audio: {str(e)}"
+
+    try:
+        with sr.AudioFile(file_path) as source:
+            audio_data = recognizer.record(source)
+            text = recognizer.recognize_google(audio_data)
+            return text
+    except sr.UnknownValueError:
+        return "Audio unintelligible"
+    except sr.RequestError as e:
+        return f"Service unavailable: {e}"
+    except Exception as e:
+        return f"Error transcribing: {str(e)}"
+
+
+
+# Load spaCy model once
+try:
+    import spacy
+    try:
+        nlp = spacy.load("en_core_web_sm")
+    except OSError:
+        # Fallback if not found, though we should have downloaded it
+        from spacy.cli import download
+        download("en_core_web_sm")
+        nlp = spacy.load("en_core_web_sm")
+except ImportError:
+    nlp = None
+    print("WARNING: spaCy not found. NER will be disabled.")
+
+def extract_entities(text):
+    """
+    Extracts named entities from text using spaCy.
+    Returns a list of dicts: [{'text': '...', 'label': '...'}, ...]
+    """
+    if not nlp:
+        return []
+    
+    doc = nlp(text)
+    entities = []
+    
+    # Filter for interesting entities and deduplicate
+    seen = set()
+    
+    for ent in doc.ents:
+        # We can filter generic types if we want, but let's keep most
+        # Common: PERSON, ORG, GPE, LOC, DATE, MONEY
+        key = (ent.text, ent.label_)
+        if key not in seen:
+            entities.append({
+                "text": ent.text,
+                "label": ent.label_
+            })
+            seen.add(key)
+            
+    return entities
