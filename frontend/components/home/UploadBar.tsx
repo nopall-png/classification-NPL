@@ -109,6 +109,7 @@ const UploadBar = () => {
     if (!name) return <FileText size={18} />;
     if (name.endsWith('.csv')) return <FileSpreadsheet size={18} />;
     if (name.endsWith('.mp3')) return <Music size={18} />;
+    if (name.endsWith('.mpeg')) return <Monitor size={18} />; // Using Monitor as a proxy for video, or could use FileVideo if available
     return <FileIcon size={18} />;
   };
 
@@ -146,7 +147,7 @@ const UploadBar = () => {
         >
           <input
             type="file"
-            accept=".txt,.csv,.pdf,.mp3,.wav"
+            accept=".txt,.csv,.pdf,.mp3,.wav,.mpeg"
             id="fileUpload"
             className="hidden"
             onChange={(e) => {
@@ -199,7 +200,7 @@ const UploadBar = () => {
                     exit={{ opacity: 0 }}
                     className={cn(hasFile && "text-white font-medium")}
                   >
-                    {(audioFile?.name || file?.name) || "Upload TXT, CSV, PDF, MP3"}
+                    {(audioFile?.name || file?.name) || "Upload TXT, CSV, PDF, MP3, MPEG"}
                   </motion.span>
                 )}
               </AnimatePresence>

@@ -47,7 +47,7 @@ def predict():
                 if not text_to_classify:
                     return jsonify({"error": "Failed to extract text from PDF"}), 400
             
-            elif filepath.lower().endswith(('.mp3', '.wav', '.webm')):
+            elif filepath.lower().endswith(('.mp3', '.wav', '.webm', '.mpeg')):
                 text_to_classify = transcribe_audio(filepath)
                 if not text_to_classify or text_to_classify.startswith("Error"):
                      return jsonify({"error": text_to_classify}), 400
