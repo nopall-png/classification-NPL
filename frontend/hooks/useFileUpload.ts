@@ -8,8 +8,8 @@ export const useFileUpload = () => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     if (selectedFile) {
-      setFile(selectedFile);
       setFileName(selectedFile.name);
+      setFile(selectedFile);
     }
   };
 

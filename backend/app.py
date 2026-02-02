@@ -3,7 +3,17 @@ from flask_cors import CORS
 import os
 import sys
 import uuid
+<<<<<<< HEAD
 from models.ml_model import predict_ml
+=======
+
+# Suppress TensorFlow logs
+os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+
+from models.ml_model import predict_ml
+from models.dl_model import predict_dl
+>>>>>>> model-svm
 from utils import extract_text_from_pdf, transcribe_audio, extract_entities
 
 app = Flask(__name__)
@@ -41,7 +51,11 @@ def predict():
                 if not text_to_classify:
                     return jsonify({"error": "Failed to extract text from PDF"}), 400
             
+<<<<<<< HEAD
             elif filepath.lower().endswith(('.mp3', '.wav', '.webm')):
+=======
+            elif filepath.lower().endswith(('.mp3', '.wav', '.webm', '.mpeg')):
+>>>>>>> model-svm
                 text_to_classify = transcribe_audio(filepath)
                 if not text_to_classify or text_to_classify.startswith("Error"):
                      return jsonify({"error": text_to_classify}), 400
@@ -62,8 +76,18 @@ def predict():
 
         print(f"DEBUG: Text to classify -> '{text_to_classify}'")
 
+<<<<<<< HEAD
         # 3. Classify using SVM Model
         category, confidence = predict_ml(text_to_classify)
+=======
+        # 3. Classify using selected Model
+        model_type = request.form.get('model') or request.args.get('model') or (request.json.get('model') if request.json else 'ml')
+        
+        if model_type == 'dl':
+             category, confidence = predict_dl(text_to_classify)
+        else:
+             category, confidence = predict_ml(text_to_classify)
+>>>>>>> model-svm
         
         # 4. Extract Entities
         entities = extract_entities(text_to_classify)

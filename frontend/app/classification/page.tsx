@@ -16,6 +16,31 @@ export default function ClassificationPage() {
   const [entities, setEntities] = useState([]);
   const [highlightText, setHighlightText] = useState("");
   const [fileName, setFileName] = useState("");
+<<<<<<< HEAD
+=======
+
+  useEffect(() => {
+    // Load result from session storage
+    const storedData = sessionStorage.getItem("classificationData");
+    const storedFileName = sessionStorage.getItem("uploadedFileName");
+
+    if (storedData) {
+      try {
+        const data = JSON.parse(storedData);
+        setText(data.text || "");
+        setCategory(data.category || "");
+        setConfidence(data.confidence || 0);
+        setEntities(data.entities || []);
+      } catch (e) {
+        console.error("Failed to parse classification data", e);
+      }
+    }
+
+    if (storedFileName) {
+      setFileName(storedFileName);
+    }
+  }, []);
+>>>>>>> model-svm
 
   const onBackClick = useCallback(() => {
     router.push("/");

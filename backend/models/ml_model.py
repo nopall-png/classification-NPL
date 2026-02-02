@@ -1,4 +1,8 @@
 import pickle
+<<<<<<< HEAD
+=======
+import numpy as np
+>>>>>>> model-svm
 import os
 import re
 import string
@@ -86,11 +90,29 @@ class MLModel:
             # Transform takes a list/iterable
             vectors = self.vectorizer.transform([clean_text])
             
+<<<<<<< HEAD
             # 3. Predict
             prediction = self.model.predict(vectors)[0]
             
             # 4. Confidence
             return prediction, 0.95 
+=======
+            # 3. Predict & Confidence
+            # Use decision_function to estimate confidence since probability=True wasn't used
+            prediction = self.model.predict(vectors)[0]
+            
+            try:
+                # Calculate pseudo-probability using softmax on decision function scores
+                scores = self.model.decision_function(vectors)[0]
+                exp_scores = np.exp(scores - np.max(scores)) # shift for stability
+                probs = exp_scores / np.sum(exp_scores)
+                confidence = np.max(probs)
+            except Exception:
+                # Fallback if decision_function not available or other error
+                confidence = 1.0
+            
+            return prediction, float(confidence)
+>>>>>>> model-svm
 
         except Exception as e:
             print(f"Prediction error: {e}")

@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef, useEffect } from "react";
 import { FileText } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useEffect, useRef } from "react";
@@ -14,6 +15,7 @@ interface InputTextProps {
 export default function InputText({ value, onChange, fileName, highlightText }: InputTextProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
+<<<<<<< HEAD
   // Determine file type based on extension
   const getFileType = (name: string) => {
     if (!name) return "TEXT INPUT";
@@ -44,6 +46,15 @@ export default function InputText({ value, onChange, fileName, highlightText }: 
         // This is a simple approximation, better way might be via blur/focus trick or scrollIntoView if supported
         textarea.blur();
         textarea.focus();
+=======
+  // Highlight text logic
+  useEffect(() => {
+    if (highlightText && textareaRef.current && value) {
+      const index = value.toLowerCase().indexOf(highlightText.toLowerCase());
+      if (index >= 0) {
+        textareaRef.current.focus();
+        textareaRef.current.setSelectionRange(index, index + highlightText.length);
+>>>>>>> model-svm
       }
     }
   }, [highlightText, value]);
@@ -77,10 +88,17 @@ export default function InputText({ value, onChange, fileName, highlightText }: 
           <div className="flex items-center justify-between">
             <div>
               <div className="text-white font-space-grotesk text-xl font-semibold">
+<<<<<<< HEAD
                 {fileType}
               </div>
               <div className="text-xs text-white/40 mt-1 font-medium">
                 Source: {fileName || "Direct Input"}
+=======
+                {fileName ? fileName : "text input"}
+              </div>
+              <div className="text-xs text-white/40 mt-1 font-medium">
+                {fileName ? "Source File" : "Direct Input"}
+>>>>>>> model-svm
               </div>
             </div>
             <div className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] text-white/40 font-mono uppercase">

@@ -65,6 +65,7 @@ def transcribe_audio(file_path):
     except Exception as e:
         return f"Error transcribing: {str(e)}"
 
+<<<<<<< HEAD
 def dummy_classify(text):
     """
     Dummy keyword-based classifier.
@@ -102,6 +103,9 @@ def dummy_classify(text):
         confidence = 0.5 + (confidence * 0.4)
         
     return best_category, round(confidence, 2)
+=======
+
+>>>>>>> model-svm
 
 # Load spaCy model once
 try:

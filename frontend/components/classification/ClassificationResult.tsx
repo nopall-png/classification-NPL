@@ -1,6 +1,10 @@
 "use client";
 
+<<<<<<< HEAD
 import { Brain, Sparkles, Tag } from "lucide-react";
+=======
+import { Brain, Sparkles } from "lucide-react";
+>>>>>>> model-svm
 import { cn } from "@/lib/utils";
 
 interface Entity {
@@ -18,12 +22,18 @@ interface ClassificationResultProps {
 export default function ClassificationResult({ category, confidence, entities = [], onEntityClick }: ClassificationResultProps) {
   const percentage = Math.round(confidence * 100);
 
+<<<<<<< HEAD
   // Helper to color code entities - uniform gray with glow as requested
   const getEntityColor = (label: string) => {
     // We'll use a subtle distinction or just uniform glowing gray
     return "bg-white/10 text-white/90 border-white/20 shadow-[0_0_10px_rgba(255,255,255,0.1)] hover:bg-white/20 hover:shadow-[0_0_15px_rgba(255,255,255,0.2)] hover:border-white/40 cursor-pointer active:scale-95";
   };
 
+=======
+  const getEntityColor = (label: string) => {
+    return "bg-white/10 text-white/90 border-white/20 shadow-[0_0_10px_rgba(255,255,255,0.1)] hover:bg-white/20 hover:shadow-[0_0_15px_rgba(255,255,255,0.2)] hover:border-white/40 cursor-pointer active:scale-95";
+  };
+>>>>>>> model-svm
   return (
     <div className="w-full flex justify-end">
       <div
@@ -47,15 +57,26 @@ export default function ClassificationResult({ category, confidence, entities = 
         </div>
 
         {/* ===== BODY ===== */}
+<<<<<<< HEAD
         <div className="flex-1 flex flex-col items-center py-10 gap-8 text-center relative overflow-y-auto custom-scrollbar">
 
           {/* Background Gradient Blob */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20 sticky top-0">
+=======
+        <div className="flex-1 flex flex-col items-center justify-center gap-10 text-center relative overflow-hidden">
+
+          {/* Background Gradient Blob */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">
+>>>>>>> model-svm
             <div className="w-[300px] h-[300px] bg-white rounded-full blur-[120px]" />
           </div>
 
           {/* CLASSIFIED AS */}
+<<<<<<< HEAD
           <div className="flex flex-col items-center gap-4 relative z-10 shrink-0">
+=======
+          <div className="flex flex-col items-center gap-4 relative z-10">
+>>>>>>> model-svm
             <div className="flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10">
               <Sparkles size={12} className="text-white/60" />
               <span className="uppercase tracking-wider text-[10px] font-bold text-white/60">
@@ -71,13 +92,25 @@ export default function ClassificationResult({ category, confidence, entities = 
                   bg-clip-text text-transparent
                 "
               >
+<<<<<<< HEAD
                 {category || "Unknown"}
+=======
+                {category || "Unclassified"}
+>>>>>>> model-svm
               </span>
             </div>
           </div>
 
           {/* CONFIDENCE */}
+<<<<<<< HEAD
           <div className="flex flex-col items-center gap-4 w-[280px] relative z-10 shrink-0">
+=======
+          <div className="flex flex-col items-center gap-4 w-[280px] relative z-10">
+            <div className="flex justify-between w-full text-xs font-medium tracking-wide">
+              <span className="text-white/40">CONFIDENCE SCORE</span>
+              <span className="text-white">{percentage}%</span>
+            </div>
+>>>>>>> model-svm
             {/* progress bar */}
             <div className="w-full h-[6px] rounded-full bg-white/5 overflow-hidden border border-white/5">
               <div
@@ -85,6 +118,7 @@ export default function ClassificationResult({ category, confidence, entities = 
                 style={{ width: `${percentage}%` }}
               />
             </div>
+<<<<<<< HEAD
             <div className="flex items-center gap-2 text-sm text-white/60 font-medium">
               <span>Confidence:</span>
               <span className="text-white">{percentage}%</span>
@@ -102,6 +136,12 @@ export default function ClassificationResult({ category, confidence, entities = 
               </div>
 
               <div className="flex flex-wrap justify-center gap-2">
+=======
+
+            {/* ENTITIES */}
+            {entities && entities.length > 0 && (
+              <div className="mt-8 flex flex-wrap justify-center gap-2 max-h-[150px] overflow-y-auto w-full px-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+>>>>>>> model-svm
                 {entities.map((entity, idx) => (
                   <button
                     key={`${entity.text}-${idx}`}
@@ -119,9 +159,14 @@ export default function ClassificationResult({ category, confidence, entities = 
                   </button>
                 ))}
               </div>
+<<<<<<< HEAD
             </div>
           )}
 
+=======
+            )}
+          </div>
+>>>>>>> model-svm
         </div>
       </div>
     </div>
