@@ -65,47 +65,7 @@ def transcribe_audio(file_path):
     except Exception as e:
         return f"Error transcribing: {str(e)}"
 
-<<<<<<< HEAD
-def dummy_classify(text):
-    """
-    Dummy keyword-based classifier.
-    Returns: category, confidence
-    """
-    text_lower = text.lower()
-    
-    keywords = {
-        "Economy": ["money", "market", "finance", "economy", "stock", "dollar", "rupiah", "business", "inflation", "trade"],
-        "Technology": ["computer", "code", "software", "hardware", "ai", "internet", "technology", "phone", "app", "digital"],
-        "Health": ["health", "doctor", "hospital", "medicine", "virus", "disease", "treatment", "patient", "nurse", "covid"],
-        "Entertainment": ["movie", "music", "song", "film", "artist", "entertainment", "concert", "celebrity", "show", "game"]
-    }
-    
-    scores = {category: 0 for category in keywords}
-    
-    for category, words in keywords.items():
-        for word in words:
-            if word in text_lower:
-                scores[category] += 1
-    
-    # Determine best match
-    best_category = max(scores, key=scores.get)
-    max_score = scores[best_category]
-    
-    # Calculate simple confidence
-    total_hits = sum(scores.values())
-    if total_hits == 0:
-        return "Unclassified", 0.0
-        
-    confidence = max_score / total_hits
-    
-    # Boost confidence a bit for display purposes if it's low but matches
-    if confidence < 0.5 and max_score > 0:
-        confidence = 0.5 + (confidence * 0.4)
-        
-    return best_category, round(confidence, 2)
-=======
 
->>>>>>> model-svm
 
 # Load spaCy model once
 try:

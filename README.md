@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-# Classifier Project
-
-This project contains the frontend and backend for the NLP Classifier application.
-=======
 # NLP News Classifier & Entity Extractor 🤖
 
 A sophisticated web application for classifying news text and audio using advanced **Machine Learning (SVM)** and **Deep Learning (LSTM)** models. It also features **Named Entity Recognition (NER)** to extract key information like names, organizations, and dates.
@@ -10,35 +5,9 @@ A sophisticated web application for classifying news text and audio using advanc
 Built with a focus on premium aesthetics ("Glassmorphism"), featuring interactive WebGL backgrounds and a seamless user experience.
 
 ---
->>>>>>> model-svm
 
-## Project Structure
+## ✨ Features
 
-<<<<<<< HEAD
-- **frontend/**: The Next.js web application.
-- **backend/**: The Python Flask API and ML/DL models.
-
-## Getting Started
-
-### Frontend
-
-Navigate to the frontend directory to run the Next.js application:
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-### Backend
-
-Navigate to the backend directory to run the Flask server:
-
-```bash
-cd backend
-pip install -r requirements.txt
-python app.py
-=======
 -   **Dual-Model AI Engine**:
     -   **Classic ML**: Support Vector Machine (SVM) with interactive confidence scoring.
     -   **Deep Learning**: LSTM (Long Short-Term Memory) network for robust text classification.
@@ -71,7 +40,6 @@ python app.py
 └── notebooks/               # Jupyter Notebooks for Training
     ├── LSTM.ipynb           # Deep Learning Model Training
     └── gadatechtpibanyak.ipynb # Machine Learning (SVM) Training
->>>>>>> model-svm
 ```
 
 ---

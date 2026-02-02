@@ -16,8 +16,6 @@ export default function ClassificationPage() {
   const [entities, setEntities] = useState([]);
   const [highlightText, setHighlightText] = useState("");
   const [fileName, setFileName] = useState("");
-<<<<<<< HEAD
-=======
 
   useEffect(() => {
     // Load result from session storage
@@ -40,31 +38,10 @@ export default function ClassificationPage() {
       setFileName(storedFileName);
     }
   }, []);
->>>>>>> model-svm
 
   const onBackClick = useCallback(() => {
     router.push("/");
   }, [router]);
-
-  useEffect(() => {
-    // Retrieve result from sessionStorage
-    const storedResult = sessionStorage.getItem("classificationResult");
-    if (storedResult) {
-      try {
-        const result = JSON.parse(storedResult);
-        setText(result.text || "");
-        setCategory(result.category || "Unknown");
-        setConfidence(result.confidence || 0);
-        setEntities(result.entities || []);
-        setFileName(result.fileName || "Unknown File");
-      } catch (e) {
-        console.error("Failed to parse result", e);
-      }
-    } else {
-      // Optional: Redirect back if no result? 
-      // For now, let's keep it empty or mock it for dev
-    }
-  }, []);
 
   return (
     <div className="relative min-h-screen bg-[#0B0B0F] text-white p-6 overflow-hidden">

@@ -23,7 +23,6 @@ const UploadBar = () => {
   const [isDragging, setIsDragging] = useState(false);
 
   const {
-    file,
     fileName,
     file,
     handleFileChange,
@@ -40,33 +39,12 @@ const UploadBar = () => {
   const hasModel = selectedModel && selectedModel !== "Choose Model";
   const canProceed = hasFile && hasModel && !isLoading;
 
-<<<<<<< HEAD
-  const [isLoading, setIsLoading] = useState(false);
-
-  const handleSend = async () => {
-    if (!canProceed || isLoading) return;
-=======
   const handleSend = async () => {
     if (!canProceed) return;
->>>>>>> model-svm
     setIsLoading(true);
 
     try {
       const formData = new FormData();
-<<<<<<< HEAD
-
-      // Prioritize audio file if recorded, otherwise uploaded file
-      if (audioFile) {
-        formData.append("file", audioFile);
-      } else if (file) {
-        formData.append("file", file);
-      } else {
-        throw new Error("No file to upload");
-      }
-
-      formData.append("model", selectedModel === "Deep Learning" ? "dl" : "ml");
-
-=======
       const fileToSend = file || audioFile;
 
       if (fileToSend) {
@@ -78,38 +56,12 @@ const UploadBar = () => {
       formData.append("model", modelParam);
 
       // Call Backend
->>>>>>> model-svm
       const response = await fetch("http://localhost:5000/predict", {
         method: "POST",
         body: formData,
       });
 
       if (!response.ok) {
-<<<<<<< HEAD
-        let errorMessage = "Classification failed";
-        try {
-          const errorData = await response.json();
-          errorMessage = errorData.error || errorMessage;
-        } catch (e) {
-          // ignore JSON parse error
-        }
-        throw new Error(errorMessage);
-      }
-
-      const result = await response.json();
-
-      // Store result in sessionStorage to pass to the next page
-      const storedData = {
-        ...result,
-        fileName: audioFile ? audioFile.name : (file ? file.name : "Recorded Audio")
-      };
-      sessionStorage.setItem("classificationResult", JSON.stringify(storedData));
-
-      router.push("/classification");
-    } catch (error: any) {
-      console.error("Error uploading:", error);
-      alert(error.message || "Failed to classify. Please check backend connection.");
-=======
         const errorData = await response.json();
         throw new Error(errorData.error || "Classification failed");
       }
@@ -124,7 +76,6 @@ const UploadBar = () => {
     } catch (error) {
       console.error("Error classifying:", error);
       alert("Failed to classify: " + error);
->>>>>>> model-svm
     } finally {
       setIsLoading(false);
     }
@@ -157,12 +108,8 @@ const UploadBar = () => {
   const getFileIcon = (name: string | null) => {
     if (!name) return <FileText size={18} />;
     if (name.endsWith('.csv')) return <FileSpreadsheet size={18} />;
-<<<<<<< HEAD
-    if (name.endsWith('.mp3') || name.endsWith('.webm')) return <Music size={18} />;
-=======
     if (name.endsWith('.mp3')) return <Music size={18} />;
     if (name.endsWith('.mpeg')) return <Monitor size={18} />; // Using Monitor as a proxy for video, or could use FileVideo if available
->>>>>>> model-svm
     return <FileIcon size={18} />;
   };
 
@@ -200,11 +147,7 @@ const UploadBar = () => {
         >
           <input
             type="file"
-<<<<<<< HEAD
-            accept=".txt,.csv,.pdf,.mp3,.webm"
-=======
             accept=".txt,.csv,.pdf,.mp3,.wav,.mpeg"
->>>>>>> model-svm
             id="fileUpload"
             className="hidden"
             onChange={(e) => {
@@ -257,11 +200,7 @@ const UploadBar = () => {
                     exit={{ opacity: 0 }}
                     className={cn(hasFile && "text-white font-medium")}
                   >
-<<<<<<< HEAD
-                    {(audioFile?.name || fileName) || "Upload TXT, CSV, PDF, Audio"}
-=======
                     {(audioFile?.name || file?.name) || "Upload TXT, CSV, PDF, MP3, MPEG"}
->>>>>>> model-svm
                   </motion.span>
                 )}
               </AnimatePresence>
